@@ -1,0 +1,111 @@
+{
+  "info": {
+    "_postman_id": "d0d7ebcb-7712-4a10-92a2-6d2e6e812da2",
+    "name": "HU-04 - BuggyCars",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58767959",
+    "_collection_link": "https://go.postman.co/collection/58767959-d0d7ebcb-7712-4a10-92a2-6d2e6e812da2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Registro de usuario",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"diego_hu04\",\r\n  \"firstName\": \"Diego\",\r\n  \"lastName\": \"Arancibia\",\r\n  \"password\": \"Password123!\",\r\n  \"confirmPassword\": \"Password123!\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 200) {\r\n    let jsonData = pm.response.json();\r\n    // Ajusta \"access_token\" según cómo se llame el campo exacto en la respuesta de esta API\r\n    pm.environment.set(\"token_auth\", jsonData.access_token); \r\n}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_auth}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "username",
+              "value": "diego_hu04"
+            },
+            {
+              "key": "password",
+              "value": "Password123!"
+            },
+            {
+              "key": "grant_type",
+              "value": "password"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/oauth/token",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "oauth",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar perfil",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/profile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
